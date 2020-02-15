@@ -7,19 +7,11 @@ class HistoryController < ApplicationController
 
   def capture
     %w[BTCAUD ETHAUD].each do |product|
-      url = URI.parse(COINJAR_FETCH_URL % product)
-      result = Net::HTTP.get(url)
-      data = JSON.parse(result)
-      Rails.logger.info result
-      Rails.logger.info data
-      product_values = data.slice('last', 'bid', 'ask')
-      Recording
-        .where(product: product)
-        .create product_values.stringify_keys
+      capture_currency product
     end
     flash[:notice] = 'Latest currency prices loaded successfully'
-  rescue StandardError => err
-    flash[:alert] = err.message
+  rescue StandardError => e
+    flash[:alert] = e.message
   ensure
     redirect_to root_url
   end
@@ -32,5 +24,17 @@ class HistoryController < ApplicationController
   def history
     @product = params[:product]
     @recordings = Recording.order(id: :desc).where product: @product
+  end
+
+  private
+
+  def capture_currency(product)
+    url = URI.parse(COINJAR_FETCH_URL % product)
+    result = Net::HTTP.get(url)
+    data = JSON.parse(result)
+    product_values = data.slice('last', 'bid', 'ask')
+    Recording
+      .where(product: product)
+      .create product_values.stringify_keys
   end
 end

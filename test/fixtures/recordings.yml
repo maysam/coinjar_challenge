@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+btc:
+  product: BTCAUD
+  last: "9210.00000000"
+  bid: "9211.00000000"
+  ask: "9242.00000000"
+
+eth:
+  product: ETHAUD
+  last: "9110.00000000"
+  bid: "9111.00000000"
+  ask: "9142.00000000"

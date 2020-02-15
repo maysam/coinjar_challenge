@@ -6,7 +6,7 @@ class HistoryTest < ActionDispatch::IntegrationTest
   test 'list the all the captured prices for the selected product' do
     get "/history/#{recordings(:btc).product}"
 
-    assert_select 'h1', "#{recordings(:btc).product} history"
+    assert_select 'h2', "#{recordings(:btc).product} history"
     assert_select 'a', 'Back' do
       assert_select '[href=?]', root_url
     end

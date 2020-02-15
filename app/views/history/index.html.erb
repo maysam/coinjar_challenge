@@ -1,8 +1,8 @@
 <div class='row'>
   <div class='col s10'>
-    <h1>
+    <h2>
       Latest currency prices
-    </h1>
+    </h2>
   </div>
   <div class='col s2'>
     <br />
@@ -15,20 +15,24 @@
 </div>
 
 <table class='striped highlight responsive-table'>
-  <tr>
-    <th>Product</th>
-    <th>Last</th>
-    <th>Bid</th>
-    <th>Ask</th>
-    <th>Updated At</th>
-  </tr>
-  <% @latest_recordings.each do |recording| %>
+  <thead>
     <tr>
-      <td><%= link_to recording.product, history_url(recording.product) %></td>
-      <td><%= as_money recording.last %></td>
-      <td><%= as_money recording.bid %></td>
-      <td><%= as_money recording.ask %></td>
-      <td><%= recording.created_at %></td>
+      <th>Currency</th>
+      <th>Last</th>
+      <th>Bid</th>
+      <th>Ask</th>
+      <th>Updated At</th>
     </tr>
-  <% end %>
+  </thead>
+  <tbody>
+    <% @latest_recordings.each do |recording| %>
+      <tr>
+        <td><%= link_to recording.product, history_url(recording.product) %></td>
+        <td><%= as_money recording.last %></td>
+        <td><%= as_money recording.bid %></td>
+        <td><%= as_money recording.ask %></td>
+        <td><%= recording.created_at %></td>
+      </tr>
+    <% end %>
+  </tbody>
 </table>

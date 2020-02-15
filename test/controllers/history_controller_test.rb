@@ -12,9 +12,9 @@ class HistoryControllerTest < ActionDispatch::IntegrationTest
     stub_request(:get, 'https://data.exchange.coinjar.com/products/BTCAUD/ticker')
       .to_return(body: body_btc.to_json)
     body_eth = {
-      "last": '9210.00000000',
-      "bid": '9211.00000000',
-      "ask": '9242.00000000'
+      "last": '9310.00000000',
+      "bid": '9311.00000000',
+      "ask": '9342.00000000'
     }
     stub_request(:get, 'https://data.exchange.coinjar.com/products/ETHAUD/ticker')
       .to_return(body: body_eth.to_json)

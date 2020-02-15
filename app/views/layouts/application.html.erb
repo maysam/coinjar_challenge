@@ -13,12 +13,12 @@
   <body class='container'>
     <% if flash[:notice] %>
       <script>
-        M.toast({html: '<%=flash[:notice]%>', classes: 'rounded light-green'}, 2000);
+        M.toast({html: '<%=flash[:notice]%>', classes: 'rounded light-green notice'}, 2000);
       </script>
     <% end %>
     <% if flash[:alert] %>
       <script>
-        M.toast({html: '<%=flash[:alert]%>', classes: 'rounded red'}, 4000);
+        M.toast({html: '<%=flash[:alert]%>', classes: 'rounded red alert'}, 4000);
       </script>
     <% end %>
     <%= yield %>

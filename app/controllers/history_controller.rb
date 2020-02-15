@@ -26,7 +26,7 @@ class HistoryController < ApplicationController
 
   def index
     latest_recordings_ids = Recording.group(:product).maximum(:id).values
-    @latest_recordings = Recording.find latest_recordings_ids
+    @latest_recordings = Recording.order(:product).find latest_recordings_ids
   end
 
   def history

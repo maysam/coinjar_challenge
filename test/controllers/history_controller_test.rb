@@ -40,7 +40,7 @@ class HistoryControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get history' do
-    get history_url(recordings(:btc))
+    get history_url(recordings(:btc).product)
     assert_response :success
   end
 end

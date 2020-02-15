@@ -1,25 +1,33 @@
-<h1>Latest product prices</h1>
+<div class='row'>
+  <div class='col s10'>
+    <h1>
+      Latest currency prices
+    </h1>
+  </div>
+  <div class='col s2'>
+    <br />
+    <%=
+      form_with(method: 'post', url: capture_url) do
+        submit_tag("Capture", data: { disable_with: "Loading from Coinjar ..." }, class: 'btn btn-primary right')
+      end
+    %>
+  </div>
+</div>
 
-<%=
-  form_with(method: 'post', url: capture_url) do
-    submit_tag("Capture")
-  end
-%>
-
-<table>
+<table class='striped highlight responsive-table'>
   <tr>
-    <td>Product</td>
-    <td>Last</td>
-    <td>Bid</td>
-    <td>Ask</td>
-    <td>Updated At</td>
+    <th>Product</th>
+    <th>Last</th>
+    <th>Bid</th>
+    <th>Ask</th>
+    <th>Updated At</th>
   </tr>
   <% @latest_recordings.each do |recording| %>
     <tr>
       <td><%= link_to recording.product, history_url(recording.product) %></td>
-      <td><%= "%.2f" % (recording.last.to_f/100) %></td>
-      <td><%= "%.2f" % (recording.bid.to_f/100) %></td>
-      <td><%= "%.2f" % (recording.ask.to_f/100) %></td>
+      <td><%= as_money recording.last %></td>
+      <td><%= as_money recording.bid %></td>
+      <td><%= as_money recording.ask %></td>
       <td><%= recording.created_at %></td>
     </tr>
   <% end %>

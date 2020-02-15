@@ -1,18 +1,32 @@
-<h1><%= @product %> history</h1>
-<a href=<%= root_url %>>Back</a>
-<table>
-  <tr>
-    <td>Last</td>
-    <td>Bid</td>
-    <td>Ask</td>
-    <td>Recorded At</td>
-  </tr>
-  <% @recordings.each do |recording| %>
-  <tr>
-    <td><%= "%.2f" % (recording.last.to_f/100) %></td>
-    <td><%= "%.2f" % (recording.bid.to_f/100) %></td>
-    <td><%= "%.2f" % (recording.ask.to_f/100) %></td>
-    <td><%= recording.created_at %></td>
-  </tr>
-  <% end %>
+<div class='row'>
+  <div class='col s10'>
+    <h1>
+      <%= @product %> history
+    </h1>
+  </div>
+  <div class='col s2'>
+    <br />
+    <a href=<%= root_url %> class='btn btn-primary right'>Back</a>
+  </div>
+</div>
+
+<table class='striped highlight responsive-table'>
+  <thead>
+    <tr>
+      <th>Last</th>
+      <th>Bid</th>
+      <th>Ask</th>
+      <th>Recorded At</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @recordings.each do |recording| %>
+      <tr>
+        <td><%= as_money recording.last %></td>
+        <td><%= as_money recording.bid %></td>
+        <td><%= as_money recording.ask %></td>
+        <td><%= recording.created_at %></td>
+      </tr>
+    <% end %>
+  </tbody>
 </table>

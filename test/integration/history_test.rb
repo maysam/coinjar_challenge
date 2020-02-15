@@ -14,20 +14,22 @@ class HistoryTest < ActionDispatch::IntegrationTest
     assert_select 'table' do
       assert_select 'tr', count: 2
 
-      assert_select 'tr:first-child' do
-        assert_select 'td', count: 4
+      assert_select 'thead tr' do
+        assert_select 'th', count: 4
 
-        assert_select 'td:nth-child(1)', 'Last'
-        assert_select 'td:nth-child(2)', 'Bid'
-        assert_select 'td:nth-child(3)', 'Ask'
-        assert_select 'td:nth-child(4)', 'Recorded At'
+        assert_select 'th:nth-child(1)', 'Last'
+        assert_select 'th:nth-child(2)', 'Bid'
+        assert_select 'th:nth-child(3)', 'Ask'
+        assert_select 'th:nth-child(4)', 'Recorded At'
       end
 
-      assert_select 'tr:nth-child(2)' do
-        assert_select 'td:nth-child(1)', as_money(recordings(:btc).last)
-        assert_select 'td:nth-child(2)', as_money(recordings(:btc).bid)
-        assert_select 'td:nth-child(3)', as_money(recordings(:btc).ask)
-        assert_select 'td:nth-child(4)', recordings(:btc).created_at.to_s
+      assert_select 'tbody' do
+        assert_select 'tr:nth-child(1)' do
+          assert_select 'td:nth-child(1)', as_money(recordings(:btc).last)
+          assert_select 'td:nth-child(2)', as_money(recordings(:btc).bid)
+          assert_select 'td:nth-child(3)', as_money(recordings(:btc).ask)
+          assert_select 'td:nth-child(4)', recordings(:btc).created_at.to_s
+        end
       end
     end
   end
@@ -36,7 +38,7 @@ class HistoryTest < ActionDispatch::IntegrationTest
     get "/history/#{recordings(:btc).product}"
 
     assert_select 'table' do
-      assert_select 'tr:nth-child(2)' do
+      assert_select 'tr:nth-child(1)' do
         assert_select 'td:nth-child(1)', as_money(recordings(:btc).last)
         assert_select 'td:nth-child(2)', as_money(recordings(:btc).bid)
         assert_select 'td:nth-child(3)', as_money(recordings(:btc).ask)
@@ -65,7 +67,7 @@ class HistoryTest < ActionDispatch::IntegrationTest
     get "/history/#{recordings(:btc).product}"
 
     assert_select 'table' do
-      assert_select 'tr:nth-child(2)' do
+      assert_select 'tr:nth-child(1)' do
         assert_select 'td:nth-child(1)', as_money(body_btc[:last])
         assert_select 'td:nth-child(2)', as_money(body_btc[:bid])
         assert_select 'td:nth-child(3)', as_money(body_btc[:ask])

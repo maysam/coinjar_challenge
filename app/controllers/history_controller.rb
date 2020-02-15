@@ -17,6 +17,7 @@ class HistoryController < ApplicationController
         .where(product: product)
         .create product_values.stringify_keys
     end
+    flash[:notice] = 'Latest currency prices loaded successfully'
   rescue StandardError => err
     flash[:alert] = err.message
   ensure

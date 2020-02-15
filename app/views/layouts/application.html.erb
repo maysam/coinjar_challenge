@@ -5,12 +5,22 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
-  <body>
-    <div><%= flash[:alert] %></div>
+  <body class='container'>
+    <% if flash[:notice] %>
+      <script>
+        M.toast({html: '<%=flash[:notice]%>', classes: 'rounded light-green'}, 2000);
+      </script>
+    <% end %>
+    <% if flash[:alert] %>
+      <script>
+        M.toast({html: '<%=flash[:alert]%>', classes: 'rounded red'}, 4000);
+      </script>
+    <% end %>
     <%= yield %>
   </body>
 </html>

@@ -6,7 +6,7 @@ class HomepageTest < ActionDispatch::IntegrationTest
   test 'contains a button to capture latest prices' do
     get '/'
 
-    assert_select 'h1', 'Latest product prices'
+    assert_select 'h1', 'Latest currency prices'
 
     assert_select 'form' do
       assert_select '[method=?]', 'post'
@@ -24,13 +24,13 @@ class HomepageTest < ActionDispatch::IntegrationTest
       assert_select 'tr', count: 3
 
       assert_select 'tr:first-child' do
-        assert_select 'td', count: 5
+        assert_select 'th', count: 5
 
-        assert_select 'td:nth-child(1)', 'Product'
-        assert_select 'td:nth-child(2)', 'Last'
-        assert_select 'td:nth-child(3)', 'Bid'
-        assert_select 'td:nth-child(4)', 'Ask'
-        assert_select 'td:nth-child(5)', 'Updated At'
+        assert_select 'th:nth-child(1)', 'Product'
+        assert_select 'th:nth-child(2)', 'Last'
+        assert_select 'th:nth-child(3)', 'Bid'
+        assert_select 'th:nth-child(4)', 'Ask'
+        assert_select 'th:nth-child(5)', 'Updated At'
       end
 
       assert_select 'tr:nth-child(2)' do

@@ -1,0 +1,26 @@
+<h1>Latest product prices</h1>
+
+<%=
+  form_with(method: 'post', url: capture_url) do
+    submit_tag("Capture")
+  end
+%>
+
+<table>
+  <tr>
+    <td>Product</td>
+    <td>Last</td>
+    <td>Bid</td>
+    <td>Ask</td>
+    <td>Updated At</td>
+  </tr>
+  <% @latest_recordings.each do |recording| %>
+    <tr>
+      <td><%= link_to recording.product, history_url(recording.product) %></td>
+      <td><%= "%.2f" % (recording.last.to_f/100) %></td>
+      <td><%= "%.2f" % (recording.bid.to_f/100) %></td>
+      <td><%= "%.2f" % (recording.ask.to_f/100) %></td>
+      <td><%= recording.created_at %></td>
+    </tr>
+  <% end %>
+</table>

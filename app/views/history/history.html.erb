@@ -1,0 +1,18 @@
+<h1><%= @product %> history</h1>
+<a href=<%= root_url %>>Back</a>
+<table>
+  <tr>
+    <td>Last</td>
+    <td>Bid</td>
+    <td>Ask</td>
+    <td>Recorded At</td>
+  </tr>
+  <% @recordings.each do |recording| %>
+  <tr>
+    <td><%= "%.2f" % (recording.last.to_f/100) %></td>
+    <td><%= "%.2f" % (recording.bid.to_f/100) %></td>
+    <td><%= "%.2f" % (recording.ask.to_f/100) %></td>
+    <td><%= recording.created_at %></td>
+  </tr>
+  <% end %>
+</table>

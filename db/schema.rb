@@ -10,6 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 2020_02_13_195449) do
+
+  create_table "recordings", force: :cascade do |t|
+    t.string "product"
+    t.string "last"
+    t.string "bid"
+    t.string "ask"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["product"], name: "index_recordings_on_product"
+  end
 
 end

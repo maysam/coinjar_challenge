@@ -10,9 +10,13 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Install bundler
+          command: gem install bundler  
+      - run:
           name: Which bundler?
           command: bundle -v
-      # - ruby/bundle-install
+      - ruby/bundle-install
+      - ruby/bundle-install
       # bundle cache
       - restore_cache:
           keys:
@@ -21,7 +25,6 @@ jobs:
       - run:
           name: Bundle Install
           command: bundle check || bundle install      
-      - ruby/bundle-install
       # Store bundle cache
       - save_cache:
           key: rails-demo-bundle-v2-{{ checksum "Gemfile.lock" }}

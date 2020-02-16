@@ -1,22 +1,15 @@
 version: 2.1
 orbs:
   ruby: circleci/ruby@0.1.2 
-
 jobs:
   build:
     docker:
       - image: circleci/ruby:2.6.3-stretch-node
-    #     executor: default
     steps:
       - checkout
       - run:
           name: Install bundler
           command: gem install bundler  
-      - run:
-          name: Which bundler?
-          command: bundle -v
-      - ruby/bundle-install
-      - ruby/bundle-install
       # bundle cache
       - restore_cache:
           keys:
@@ -44,23 +37,8 @@ jobs:
           paths:
             - ~/.cache/yarn 
       - run:
-          name: Database Setuo
+          name: Database Setup
           command: bundle exec rake db:setup
-  test:
-    parallelism: 3
-    # executor: default
-    docker:
-      - image: circleci/ruby:2.6.3-stretch-node
-    steps:
-      - checkout
-      - ruby/load-cache:
-          key: rails-demo-bundle
-      - ruby/bundle-install
-      # Only necessary if app uses webpacker or yarn in some other way
-      - restore_cache:
-          keys:
-            - rails-demo-yarn-{{ checksum "yarn.lock" }}
-            - rails-demo-yarn-
       - run:
           name: Integration tests
           command: bundle exec rails test
@@ -73,6 +51,3 @@ workflows:
   build_and_test:
     jobs:
       - build
-      - test:
-          requires:
-            - build

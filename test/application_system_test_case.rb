@@ -3,7 +3,8 @@
 require 'test_helper'
 
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
-  driven_by :rack_test, using: nil
+  driven_by(:rack_test, using: :rack_test)
+  # driven_by :rack_test, using: nil
   setup do    
     stub_request(:get, %r|chromedriver.storage.googleapis.com|)
       .to_return(status: 200, body: '', headers: {})

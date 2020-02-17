@@ -42,33 +42,15 @@ jobs:
       - run:
           name: Integration tests
           command: bundle exec rails test
-#       - run:
-#           name: Download Selenium
-#           command: |
-#             curl -O http://selenium-release.storage.googleapis.com/3.5/selenium-server-standalone-3.5.3.jar
-#       - run:
-#           name: Start Selenium
-#           command: |
-#             java -jar selenium-server-standalone-3.5.3.jar -log test-reports/selenium.log
-#           background: true
-
-#       - run:
-#           name: Update Chromedriver
-#           command: |
-#             sudo apt-get update
-#             sudo apt-get install lsb-release libappindicator3-1 fonts-liberation libasound2 libnspr4 libnss3 libxss1 xdg-utils 
-#             curl -L -o google-chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-#             sudo dpkg -i google-chrome.deb
-#             sudo sed -i 's|HERE/chrome"|HERE/chrome" --no-sandbox|g' /opt/google/chrome/google-chrome
-#             rm google-chrome.deb
-#       - run:
-#         name: Install dependencies
-#           command: |
-#             apt-get update 
-#             curl -sS https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list
-#             apt-get update && apt-get install google-chrome-stable=73.0.3683.86-1
-#             wget https://chromedriver.storage.googleapis.com/73.0.3683.68/chromedriver_linux64.zip && unzip chromedriver_linux64.zip -d /usr/local/bin && rm chromedriver_linux64.zip
-#             chmod +x /usr/local/bin/chromedriver
+      - run:
+          name: Install Chrome
+          command: |
+            sudo apt-get update
+            sudo apt-get install lsb-release libappindicator3-1 fonts-liberation libasound2 libnspr4 libnss3 libxss1 xdg-utils 
+            curl -L -o google-chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+            sudo dpkg -i google-chrome.deb
+            sudo sed -i 's|HERE/chrome"|HERE/chrome" --no-sandbox|g' /opt/google/chrome/google-chrome
+            rm google-chrome.deb
       - run:
           name: System tests
           command: bundle exec rails test:system

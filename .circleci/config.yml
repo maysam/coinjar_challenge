@@ -1,0 +1,71 @@
+version: 2.1
+orbs:
+  ruby: circleci/ruby@0.1.2
+jobs:
+  build:
+    environment:
+      CIRCLE_TEST_RESULTS: $HOME/test-results
+    docker:
+      - image: circleci/ruby:2.6.3-stretch-node
+    steps:
+      - checkout
+      - run: mkdir ~/test-results
+      - run: mkdir ~/test-results/integration
+      - run: mkdir ~/test-results/system
+      - run:
+          name: Install bundler
+          command: gem install bundler
+      # bundle cache
+      - restore_cache:
+          keys:
+            - rails-demo-bundle-v2-{{ checksum "Gemfile.lock" }}
+            - rails-demo-bundle-v2-
+      - run:
+          name: Bundle Install
+          command: bundle check || bundle install --path vendor/bundle
+      # Store bundle cache
+      - save_cache:
+          key: rails-demo-bundle-v2-{{ checksum "Gemfile.lock" }}
+          paths:
+            - ~/.bundle
+      # Only necessary if app uses webpacker or yarn in some other way
+      - restore_cache:
+          keys:
+            - rails-demo-yarn-{{ checksum "yarn.lock" }}
+            - rails-demo-yarn-
+      - run:
+          name: Yarn Install
+          command: yarn install --cache-folder ~/.cache/yarn
+      # Store yarn / webpacker cache
+      - save_cache:
+          key: rails-demo-yarn-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+      - run:
+          name: Database Setup
+          command: bundle exec rake db:setup
+      - run:
+          name: Integration tests
+          command: bundle exec rails test --ci-report --ci-dir=~/test-results/integration
+          when: always # Run this even when tests fail
+      - run:
+          name: Install Chrome
+          command: |
+            sudo apt-get update
+            sudo apt-get install lsb-release libappindicator3-1 fonts-liberation libasound2 libnspr4 libnss3 libxss1 xdg-utils
+            curl -L -o google-chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+            sudo dpkg -i google-chrome.deb
+            sudo sed -i 's|HERE/chrome"|HERE/chrome" --no-sandbox|g' /opt/google/chrome/google-chrome
+            rm google-chrome.deb
+      - run:
+          name: System tests
+          command: bundle exec rails test:system #--ci-report --ci-dir=~/test-results/system
+          when: always # Run this even when tests fail
+      - store_test_results:
+          path: ~/test-results
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build

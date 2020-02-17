@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/maysam/coinjar_challenge.svg?style=shield)](https://app.circleci.com/github/maysam/coinjar_challenge/pipelines)
+
 # Code Challenge
 
 ## Task Description

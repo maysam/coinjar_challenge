@@ -22,7 +22,7 @@ jobs:
       - save_cache:
           key: rails-demo-bundle-v2-{{ checksum "Gemfile.lock" }}
           paths:
-            - vendor/bundle
+            - ~/.bundle
       # Only necessary if app uses webpacker or yarn in some other way
       - restore_cache:
           keys:
@@ -52,15 +52,15 @@ jobs:
 #             java -jar selenium-server-standalone-3.5.3.jar -log test-reports/selenium.log
 #           background: true
 
-      - run:
-          name: Update Chromedriver
-          command: |
-            sudo apt-get update
-            sudo apt-get install lsb-release libappindicator3-1 fonts-liberation libasound2 libnspr4 libnss3 libxss1 xdg-utils 
-            curl -L -o google-chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-            sudo dpkg -i google-chrome.deb
-            sudo sed -i 's|HERE/chrome"|HERE/chrome" --no-sandbox|g' /opt/google/chrome/google-chrome
-            rm google-chrome.deb
+#       - run:
+#           name: Update Chromedriver
+#           command: |
+#             sudo apt-get update
+#             sudo apt-get install lsb-release libappindicator3-1 fonts-liberation libasound2 libnspr4 libnss3 libxss1 xdg-utils 
+#             curl -L -o google-chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+#             sudo dpkg -i google-chrome.deb
+#             sudo sed -i 's|HERE/chrome"|HERE/chrome" --no-sandbox|g' /opt/google/chrome/google-chrome
+#             rm google-chrome.deb
 #       - run:
 #         name: Install dependencies
 #           command: |

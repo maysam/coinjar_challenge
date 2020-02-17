@@ -4,7 +4,10 @@ require 'test_helper'
 
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   driven_by :rack_test
-  setup do
+  setup do    
+	  p '1:'
+p page.driver.class
+
     stub_request(:get, %r|chromedriver.storage.googleapis.com|)
       .to_return(status: 200, body: '', headers: {})
   

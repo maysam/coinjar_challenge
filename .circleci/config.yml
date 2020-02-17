@@ -17,7 +17,7 @@ jobs:
             - rails-demo-bundle-v2-
       - run:
           name: Bundle Install
-          command: bundle check || bundle install      
+          command: bundle check || bundle install --path vendor/bundle      
       # Store bundle cache
       - save_cache:
           key: rails-demo-bundle-v2-{{ checksum "Gemfile.lock" }}

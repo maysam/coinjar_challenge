@@ -1,0 +1,80 @@
+version: 2.1
+orbs:
+  ruby: circleci/ruby@0.1.2 
+jobs:
+  build:
+    docker:
+      - image: circleci/ruby:2.6.3-stretch-node
+    steps:
+      - checkout
+      - run:
+          name: Install bundler
+          command: gem install bundler  
+      # bundle cache
+      - restore_cache:
+          keys:
+            - rails-demo-bundle-v2-{{ checksum "Gemfile.lock" }}
+            - rails-demo-bundle-v2-
+      - run:
+          name: Bundle Install
+          command: bundle check || bundle install      
+      # Store bundle cache
+      - save_cache:
+          key: rails-demo-bundle-v2-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+      # Only necessary if app uses webpacker or yarn in some other way
+      - restore_cache:
+          keys:
+            - rails-demo-yarn-{{ checksum "yarn.lock" }}
+            - rails-demo-yarn-
+      - run:
+          name: Yarn Install
+          command: yarn install --cache-folder ~/.cache/yarn
+      # Store yarn / webpacker cache
+      - save_cache:
+          key: rails-demo-yarn-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn 
+      - run:
+          name: Database Setup
+          command: bundle exec rake db:setup
+      - run:
+          name: Integration tests
+          command: bundle exec rails test
+#       - run:
+#           name: Download Selenium
+#           command: |
+#             curl -O http://selenium-release.storage.googleapis.com/3.5/selenium-server-standalone-3.5.3.jar
+#       - run:
+#           name: Start Selenium
+#           command: |
+#             java -jar selenium-server-standalone-3.5.3.jar -log test-reports/selenium.log
+#           background: true
+
+      - run:
+          name: Update Chromedriver
+          command: |
+            sudo apt-get update
+            sudo apt-get install lsb-release libappindicator3-1 fonts-liberation libasound2 libnspr4 libnss3 libxss1 xdg-utils 
+            curl -L -o google-chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+            sudo dpkg -i google-chrome.deb
+            sudo sed -i 's|HERE/chrome"|HERE/chrome" --no-sandbox|g' /opt/google/chrome/google-chrome
+            rm google-chrome.deb
+#       - run:
+#         name: Install dependencies
+#           command: |
+#             apt-get update 
+#             curl -sS https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list
+#             apt-get update && apt-get install google-chrome-stable=73.0.3683.86-1
+#             wget https://chromedriver.storage.googleapis.com/73.0.3683.68/chromedriver_linux64.zip && unzip chromedriver_linux64.zip -d /usr/local/bin && rm chromedriver_linux64.zip
+#             chmod +x /usr/local/bin/chromedriver
+      - run:
+          name: System tests
+          command: bundle exec rails test:system
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
